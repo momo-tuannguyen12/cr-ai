@@ -2,7 +2,6 @@ import path from 'path';
 import simpleGit from 'simple-git';
 import { reviewCode } from '../utils/reviewer.js';
 import { loadConfig } from '../utils/config.js';
-import { checkNodeVersion } from '../utils/version.js';
 import {
   styles,
   printSectionHeader,
@@ -18,14 +17,6 @@ import {
 
 export async function changesCommand() {
   printSectionHeader('CODE REVIEW', 'Reviewing changes in your git repository');
-
-  // Check Node.js version
-  const nodeVersionInfo = checkNodeVersion();
-  if (!nodeVersionInfo.isSupported) {
-    printWarning(`You are using Node.js ${nodeVersionInfo.currentVersion}. CR requires Node.js ${nodeVersionInfo.minVersion} or higher.`);
-    printWarning('The tool may not function correctly. Please upgrade your Node.js version.');
-    printBlankLine();
-  }
 
   try {
     // Load configuration

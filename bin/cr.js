@@ -6,8 +6,17 @@ import { changesCommand } from '../src/commands/changes.js';
 import { indexCommand } from '../src/commands/index.js';
 import { integrateCommand } from '../src/commands/integrate.js';
 import { modelChangeCommand, modelShowCommand, modelListCommand } from '../src/commands/model.js';
-import { getPackageVersion } from '../src/utils/version.js';
+import { getPackageVersion, checkNodeVersion, MIN_NODE_VERSION } from '../src/utils/version.js';
 import chalk from 'chalk';
+
+// Check Node.js version
+const nodeVersionInfo = checkNodeVersion();
+if (!nodeVersionInfo.isSupported) {
+  console.error(chalk.yellow(`⚠️ Warning: You are using Node.js ${nodeVersionInfo.currentVersion}`));
+  console.error(chalk.yellow(`⚠️ Code Review AI only supports Node.js ${MIN_NODE_VERSION} or above`));
+  console.error(chalk.yellow('⚠️ The tool may not function correctly. Please upgrade your Node.js version.'));
+  console.error('');
+}
 
 // Set up the CLI program
 // Get the package version
