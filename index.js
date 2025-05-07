@@ -2,6 +2,7 @@
 import { initCommand } from './src/commands/init.js';
 import { changesCommand } from './src/commands/changes.js';
 import { indexCommand } from './src/commands/index.js';
+import { integrateCommand } from './src/commands/integrate.js';
 import { modelChangeCommand, modelShowCommand, modelListCommand } from './src/commands/model.js';
 import { loadConfig, saveConfig } from './src/utils/config.js';
 import { reviewCode } from './src/utils/reviewer.js';
@@ -13,6 +14,7 @@ export {
   initCommand,
   changesCommand,
   indexCommand,
+  integrateCommand,
   modelChangeCommand,
   modelShowCommand,
   modelListCommand,
@@ -38,6 +40,7 @@ export default {
   init: initCommand,
   changes: changesCommand,
   index: indexCommand,
+  integrate: integrateCommand,
   model: {
     change: modelChangeCommand,
     show: modelShowCommand,

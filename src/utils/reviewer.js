@@ -53,15 +53,37 @@ To get a detailed code review, please configure your Gemini API key using:
     // Add specific formatting instructions to make parsing easier
     fullInstruction += `
 Please format your response with clear section headers for better readability.
-Use the following structure:
-1. Start with a brief summary of the changes
-2. List any issues or bugs found (if any)
-3. Provide suggestions for improvements (if any)
-4. Include code examples where appropriate
+Use the following structure with EXACTLY these section headers:
 
-IMPORTANT: DO NOT use any asterisks (*) or markdown formatting in your response.
-DO NOT use **, *, or any other markdown syntax. Use plain text only.
-For bullet points, use - instead of *. For emphasis, use ALL CAPS instead of asterisks.
+SUMMARY:
+A brief summary of the changes
+
+ISSUES:
+List any issues or bugs found (if any)
+
+SUGGESTIONS:
+Provide suggestions for improvements (if any)
+
+BEST PRACTICES:
+Note any best practices that should be followed
+
+SECURITY:
+Mention any security concerns (if applicable)
+
+PERFORMANCE:
+Note any performance considerations (if applicable)
+
+CONCLUSION:
+A brief conclusion
+
+Include code examples where appropriate using triple backticks.
+
+IMPORTANT:
+- DO NOT use any asterisks (*) or markdown formatting in your response.
+- DO NOT use **, *, or any other markdown syntax. Use plain text only.
+- For bullet points, use - instead of *. For emphasis, use ALL CAPS instead of asterisks.
+- ALWAYS use the EXACT section headers listed above (in ALL CAPS followed by a colon).
+- If a section doesn't apply, you can skip it entirely.
 
 Here is the code diff to review:
 

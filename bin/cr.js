@@ -4,6 +4,7 @@ import { program } from 'commander';
 import { initCommand } from '../src/commands/init.js';
 import { changesCommand } from '../src/commands/changes.js';
 import { indexCommand } from '../src/commands/index.js';
+import { integrateCommand } from '../src/commands/integrate.js';
 import { modelChangeCommand, modelShowCommand, modelListCommand } from '../src/commands/model.js';
 import { getPackageVersion } from '../src/utils/version.js';
 import chalk from 'chalk';
@@ -32,6 +33,11 @@ getPackageVersion().then(version => {
     .description('Index current code in the directory')
     .action(indexCommand);
 
+  program
+    .command('integrate')
+    .description('Set up git hooks to run code review on commit')
+    .action(integrateCommand);
+
   // Model management commands
   const modelCommand = program
     .command('model')
@@ -59,6 +65,7 @@ getPackageVersion().then(version => {
     console.log('  $ cr init');
     console.log('  $ cr changes');
     console.log('  $ cr index');
+    console.log('  $ cr integrate');
     console.log('  $ cr model list');
     console.log('  $ cr model show');
     console.log('  $ cr model change');

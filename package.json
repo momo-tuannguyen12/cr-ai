@@ -1,6 +1,6 @@
 {
   "name": "cr-ai",
-  "version": "1.0.32",
+  "version": "1.0.37",
   "description": "A terminal AI tool for code review with AI assistance using Gemini API",
   "main": "index.js",
   "bin": {
@@ -28,12 +28,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/yourusername/cr-tool.git"
+    "url": "git+https://github.com/momo-tuannguyen12/cr-ai.git"
   },
   "bugs": {
-    "url": "https://github.com/yourusername/cr-tool/issues"
+    "url": "https://github.com/momo-tuannguyen12/cr-ai/issues"
   },
-  "homepage": "https://github.com/yourusername/cr-tool#readme",
+  "homepage": "https://github.com/momo-tuannguyen12/cr-ai#readme",
   "dependencies": {
     "commander": "^11.1.0",
     "chalk": "^5.3.0",

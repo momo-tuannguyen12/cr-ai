@@ -2,6 +2,7 @@ import path from 'path';
 import simpleGit from 'simple-git';
 import { reviewCode } from '../utils/reviewer.js';
 import { loadConfig } from '../utils/config.js';
+import { checkNodeVersion } from '../utils/version.js';
 import {
   styles,
   printSectionHeader,
@@ -17,6 +18,14 @@ import {
 
 export async function changesCommand() {
   printSectionHeader('CODE REVIEW', 'Reviewing changes in your git repository');
+
+  // Check Node.js version
+  const nodeVersionInfo = checkNodeVersion();
+  if (!nodeVersionInfo.isSupported) {
+    printWarning(`You are using Node.js ${nodeVersionInfo.currentVersion}. CR requires Node.js ${nodeVersionInfo.minVersion} or higher.`);
+    printWarning('The tool may not function correctly. Please upgrade your Node.js version.');
+    printBlankLine();
+  }
 
   try {
     // Load configuration
@@ -109,7 +118,7 @@ export async function changesCommand() {
         const review = await reviewCode(diff, config);
 
         // Format and display the review
-        formatAndDisplayReview(review, file);
+        formatAndDisplayReview(review, file, config);
 
         reviewedCount++;
       } catch (error) {
@@ -133,8 +142,12 @@ export async function changesCommand() {
 /**
  * Format and display the review results in a structured way
  * @param {string} review - The review text from the AI
+ * @param {string} _file - The file being reviewed (unused but kept for API consistency)
+ * @param {Object} config - The CR configuration
  */
-function formatAndDisplayReview(review) {
+function formatAndDisplayReview(review, _file, config) {
+  // Check if colors should be used (default to true if not specified)
+  const useColors = config.use_colors !== false;
   if (!review) {
     console.log('No review generated.');
     return;
@@ -170,16 +183,31 @@ function formatAndDisplayReview(review) {
 
     // Add the highlighted code block
     processedReview += '\n';
-    processedReview += styles.dim('--- Code Block' + (language ? ` (${language})` : '') + ' ---');
+
+    if (useColors) {
+      processedReview += styles.dim('--- Code Block' + (language ? ` (${language})` : '') + ' ---');
+    } else {
+      processedReview += '--- Code Block' + (language ? ` (${language})` : '') + ' ---';
+    }
+
     processedReview += '\n';
 
     // Split the code into lines and highlight each line
     const codeLines = code.split('\n');
     codeLines.forEach(line => {
-      processedReview += styles.code(line) + '\n';
+      if (useColors) {
+        processedReview += styles.code(line) + '\n';
+      } else {
+        processedReview += line + '\n';
+      }
     });
 
-    processedReview += styles.dim('--- End Code Block ---');
+    if (useColors) {
+      processedReview += styles.dim('--- End Code Block ---');
+    } else {
+      processedReview += '--- End Code Block ---';
+    }
+
     processedReview += '\n';
 
     // Update the last index
@@ -190,7 +218,11 @@ function formatAndDisplayReview(review) {
   processedReview += cleanedReview.substring(lastIndex);
 
   // Highlight inline code with single backticks
-  processedReview = processedReview.replace(/`([^`]+)`/g, (_, code) => styles.code(code));
+  if (useColors) {
+    processedReview = processedReview.replace(/`([^`]+)`/g, (_, code) => styles.code(code));
+  } else {
+    processedReview = processedReview.replace(/`([^`]+)`/g, (_, code) => code);
+  }
 
   // Replace asterisk bullet points with dashes
   processedReview = processedReview.replace(/^\s*\*/gm, '-');
@@ -198,8 +230,42 @@ function formatAndDisplayReview(review) {
   // Remove any remaining asterisks
   processedReview = processedReview.replace(/\*/g, '');
 
+  // Apply colorful headers to common sections if colors are enabled
+  if (useColors) {
+    // This regex matches lines that look like section headers (capitalized words followed by a colon or all caps)
+    const headerRegex = /^([A-Z][A-Za-z\s]+:|\b[A-Z]{2,}[A-Z\s]+\b)/gm;
+
+    processedReview = processedReview.replace(headerRegex, (header) => {
+      const lowerHeader = header.toLowerCase();
+
+      // Determine the type of header and apply appropriate styling
+      if (lowerHeader.includes('summary') || lowerHeader.includes('overview')) {
+        return styles.reviewSummary.bold(header);
+      } else if (lowerHeader.includes('issue') || lowerHeader.includes('bug') || lowerHeader.includes('error')) {
+        return styles.reviewIssue.bold(header);
+      } else {
+        // All other headers use cyan color
+        return styles.sectionTitle.bold(header);
+      }
+    });
+  }
+
+  // Add a divider before the review
+  if (useColors) {
+    console.log(styles.dim('─'.repeat(process.stdout.columns || 80)));
+  } else {
+    console.log('─'.repeat(process.stdout.columns || 80));
+  }
+
   // Print the processed review text
   console.log('\n' + processedReview + '\n');
+
+  // Add a divider after the review
+  if (useColors) {
+    console.log(styles.dim('─'.repeat(process.stdout.columns || 80)));
+  } else {
+    console.log('─'.repeat(process.stdout.columns || 80));
+  }
 }
 
 

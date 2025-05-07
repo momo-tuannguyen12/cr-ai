@@ -115,6 +115,12 @@ export async function initCommand() {
         name: 'instruction',
         message: 'Default instruction for code review:',
         default: 'Review this code for bugs, security issues, and best practices.'
+      },
+      {
+        type: 'confirm',
+        name: 'useColors',
+        message: 'Use colored output for code reviews?',
+        default: true
       }
     ]);
 
@@ -131,7 +137,8 @@ export async function initCommand() {
       rules: defaultRules,
       gemini_api_key: answers.geminiApiKey,
       model_name: answers.modelName,
-      instruction: answers.instruction
+      instruction: answers.instruction,
+      use_colors: answers.useColors
     };
 
     // Write configuration to CR.json

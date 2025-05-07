@@ -7,8 +7,9 @@ A terminal-based code review tool from git changes (before commit) with AI assis
 1. **Index code**: Index current code in your project directory
 2. **Initialize configuration**: Set up the CR tool with a configuration file (CR.json)
 3. **Review code changes**: Automatically review git changes with AI assistance
-4. **Customizable rules**: Define your own code review rules
-5. **AI-powered**: Uses Google's Gemini API for intelligent code review
+4. **Git integration**: Set up git hooks to run code review automatically on commit
+5. **Customizable rules**: Define your own code review rules
+6. **AI-powered**: Uses Google's Gemini API for intelligent code review
 
 ## Installation
 
@@ -30,7 +31,8 @@ The tool uses a `CR.json` file for configuration with the following structure:
     ],
     "gemini_api_key": "your gemini api key",
     "model_name": "gemini-2.0-flash",
-    "instruction": "Review this code for bugs, security issues, and best practices."
+    "instruction": "Review this code for bugs, security issues, and best practices.",
+    "use_colors": true
 }
 ```
 
@@ -38,6 +40,10 @@ The `model_name` field specifies which Gemini model to use for code review. Supp
 - `gemini-2.0-flash` (default): Faster, more efficient model
 - `gemini-1.5-flash`: Balanced performance model
 - `gemini-2.5-flash-preview-04-17`: Latest preview model with advanced capabilities
+
+The `use_colors` field controls whether the code review output uses colored formatting:
+- `true` (default): Display code reviews with colorful headers and syntax highlighting
+- `false`: Display code reviews in plain text without colors
 
 ## Usage
 
@@ -64,6 +70,14 @@ cr changes
 ```
 
 This will analyze your git changes and provide AI-powered code review feedback.
+
+### Set up git hooks
+
+```bash
+cr integrate
+```
+
+This will set up git hooks to automatically run code review on commit using Husky. The command preserves any existing pre-commit hooks, so it's safe to use in projects that already have other hooks configured (like ESLint).
 
 ### Manage AI models
 
@@ -93,9 +107,10 @@ This will allow you to select a different AI model for code review.
 
 ## Requirements
 
-- Node.js >= 18
-- Git repository (for the `changes` command)
+- **Node.js >= 18** (required, the tool will warn you if using an older version)
+- Git repository (for the `changes` and `integrate` commands)
 - Gemini API key (optional, but recommended for AI features)
+- Husky (automatically installed by the `integrate` command)
 
 ## License
 
