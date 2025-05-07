@@ -50,8 +50,31 @@ To get a detailed code review, please configure your Gemini API key using:
       fullInstruction += '\n';
     }
 
-    // Add specific formatting instructions to make parsing easier
-    fullInstruction += `
+    // Add specific formatting instructions based on review mode
+    if (config.light_review) {
+      // Light review mode - only ISSUES and BEST PRACTICES
+      fullInstruction += `
+Please provide a focused code review with ONLY these two sections:
+
+ISSUES:
+List any issues, bugs, or errors found in the code (if any)
+
+BEST PRACTICES:
+Note any best practices that should be followed or improvements that could be made
+
+Include code examples where appropriate using triple backticks.
+
+IMPORTANT:
+- DO NOT use any asterisks (*) or markdown formatting in your response.
+- DO NOT use **, *, or any other markdown syntax. Use plain text only.
+- For bullet points, use - instead of *. For emphasis, use ALL CAPS instead of asterisks.
+- ALWAYS use the EXACT section headers listed above (in ALL CAPS followed by a colon).
+- If a section doesn't apply (e.g., no issues found), still include the header but note "No issues found."
+- IMPORTANT: Do not use lines that start or end with "━━━━ Code Block ━━━━" or "━━━━ End Code Block ━━━━" as these are reserved for formatting.
+`;
+    } else {
+      // Full review mode - all sections
+      fullInstruction += `
 Please format your response with clear section headers for better readability.
 Use the following structure with EXACTLY these section headers:
 
@@ -84,7 +107,11 @@ IMPORTANT:
 - For bullet points, use - instead of *. For emphasis, use ALL CAPS instead of asterisks.
 - ALWAYS use the EXACT section headers listed above (in ALL CAPS followed by a colon).
 - If a section doesn't apply, you can skip it entirely.
+- IMPORTANT: Do not use lines that start or end with "━━━━ Code Block ━━━━" or "━━━━ End Code Block ━━━━" as these are reserved for formatting.
+`;
+    }
 
+    fullInstruction += `
 Here is the code diff to review:
 
 \`\`\`

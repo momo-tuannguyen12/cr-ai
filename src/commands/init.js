@@ -121,6 +121,12 @@ export async function initCommand() {
         name: 'useColors',
         message: 'Use colored output for code reviews?',
         default: true
+      },
+      {
+        type: 'confirm',
+        name: 'lightReview',
+        message: 'Use light review mode? (Only shows ISSUES and BEST PRACTICES)',
+        default: false
       }
     ]);
 
@@ -138,7 +144,8 @@ export async function initCommand() {
       gemini_api_key: answers.geminiApiKey,
       model_name: answers.modelName,
       instruction: answers.instruction,
-      use_colors: answers.useColors
+      use_colors: answers.useColors,
+      light_review: answers.lightReview
     };
 
     // Write configuration to CR.json

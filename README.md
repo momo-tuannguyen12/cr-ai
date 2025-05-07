@@ -32,7 +32,8 @@ The tool uses a `CR.json` file for configuration with the following structure:
     "gemini_api_key": "your gemini api key",
     "model_name": "gemini-2.0-flash",
     "instruction": "Review this code for bugs, security issues, and best practices.",
-    "use_colors": true
+    "use_colors": true,
+    "light_review": false
 }
 ```
 
@@ -44,6 +45,10 @@ The `model_name` field specifies which Gemini model to use for code review. Supp
 The `use_colors` field controls whether the code review output uses colored formatting:
 - `true` (default): Display code reviews with colorful headers and syntax highlighting
 - `false`: Display code reviews in plain text without colors
+
+The `light_review` field controls the level of detail in code reviews:
+- `false` (default): Full review with all sections (SUMMARY, ISSUES, SUGGESTIONS, BEST PRACTICES, etc.)
+- `true`: Light review with only ISSUES and BEST PRACTICES sections
 
 ## Usage
 

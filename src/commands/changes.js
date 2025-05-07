@@ -74,6 +74,14 @@ export async function changesCommand() {
 
     printBlankLine();
     printInfo(`Using model: ${styles.highlight(config.model_name || 'gemini-2.0-flash')}`);
+
+    // Display review mode
+    if (config.light_review) {
+      printInfo(`Review mode: ${styles.highlight('Light')} (only ISSUES and BEST PRACTICES)`);
+    } else {
+      printInfo(`Review mode: ${styles.highlight('Full')}`);
+    }
+
     printDivider();
 
     // Review each file
@@ -122,6 +130,7 @@ export async function changesCommand() {
     printListItem('Files reviewed', `${reviewedCount}/${changedFiles.length}`);
     printListItem('Files skipped', `${skippedCount}`);
     printListItem('Model used', config.model_name || 'gemini-2.0-flash', true);
+    printListItem('Review mode', config.light_review ? 'Light (ISSUES and BEST PRACTICES only)' : 'Full', true);
 
     printBlankLine();
     printSuccess('Code review completed successfully!');
@@ -176,9 +185,9 @@ function formatAndDisplayReview(review, _file, config) {
     processedReview += '\n';
 
     if (useColors) {
-      processedReview += styles.dim('--- Code Block' + (language ? ` (${language})` : '') + ' ---');
+      processedReview += styles.dim('━━━━ Code Block' + (language ? ` (${language})` : '') + ' ━━━━');
     } else {
-      processedReview += '--- Code Block' + (language ? ` (${language})` : '') + ' ---';
+      processedReview += '━━━━ Code Block' + (language ? ` (${language})` : '') + ' ━━━━';
     }
 
     processedReview += '\n';
@@ -194,9 +203,9 @@ function formatAndDisplayReview(review, _file, config) {
     });
 
     if (useColors) {
-      processedReview += styles.dim('--- End Code Block ---');
+      processedReview += styles.dim('━━━━ End Code Block ━━━━');
     } else {
-      processedReview += '--- End Code Block ---';
+      processedReview += '━━━━ End Code Block ━━━━';
     }
 
     processedReview += '\n';
