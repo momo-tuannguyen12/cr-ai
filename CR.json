@@ -1,0 +1,11 @@
+{
+  "index_source_path": ".",
+  "rules": [
+    "Check for security vulnerabilities",
+    "Ensure proper error handling",
+    "Verify code follows best practices"
+  ],
+  "gemini_api_key": "",
+  "model_name": "gemini-2.5-flash-preview-04-17",
+  "instruction": "Review this code for bugs, security issues, and best practices."
+}
