@@ -11,6 +11,8 @@ A terminal-based code review tool from git changes (before commit) with AI assis
 5. **Customizable rules**: Define your own code review rules
 6. **AI-powered**: Uses Google's Gemini API for intelligent code review
 
+![alt text](image.png)
+
 ## Installation
 
 ```bash
