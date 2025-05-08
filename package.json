@@ -1,6 +1,6 @@
 {
   "name": "cr-ai",
-  "version": "1.0.41",
+  "version": "1.0.42",
   "description": "A terminal AI tool for code review with AI assistance using Gemini API",
   "main": "index.js",
   "bin": {
